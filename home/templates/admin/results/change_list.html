@@ -1,0 +1,10 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+
+{% block object-tools-items %}
+    {{ block.super }}
+    <form action="{% url 'admin:results_export' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <input type="submit" value="Export All Results" class="btn btn-primary">
+    </form>
+{% endblock %}

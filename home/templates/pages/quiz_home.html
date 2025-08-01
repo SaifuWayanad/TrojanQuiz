@@ -1,0 +1,248 @@
+{% extends 'layouts/base_background.html' %}
+
+{% block title %} Trojan Quiz {% endblock title %}
+{% load static %}
+{% block content %}
+<div class="page-header align-items-start min-vh-100" style="background-image: url('{% static 'img/4e8bcc11a0f1873d861c25ef8d1d7abd.jpg' %}');" loading="lazy">
+  <span class="mask bg-gradient-dark opacity-6"></span>
+  <div class="container my-auto">
+    <div class="row">
+      <div class="col-lg-4 col-md-8 col-12 mx-auto">
+        <div class="card z-index-0 fadeIn3 fadeInBottom" style="background-color: rgba(255, 255, 255, 0.9); /* Light overlay */">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2" style="background-color: #8ED3F4 !important; /* Light blue color */">
+            <div class="bg-gradient-warning shadow-primary border-radius-lg py-3 pe-1">
+              <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Independence Day Quiz</h4>
+            </div>
+          </div>
+          <div class="card-body">
+            <form role="form" method="post" action="{% url 'index' %}" class="text-start">
+              {% csrf_token %}
+              <div class="col-md-12">
+                <div class="input-group input-group-outline my-3">
+                  <label class="form-label">Name</label>
+                  <input type="text" class="form-control" name="name" required>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="input-group input-group-outline my-3">
+                  <label class="form-label">Phone</label>
+                  <input type="number" class="form-control" id="phone" name="phone" min="1000000000" max="9999999999" required>
+                  <div class="invalid-feedback">
+                      Phone number must be exactly 10 digits.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="input-group input-group-outline my-3">
+                  <label class="form-label">Company</label>
+                  <input type="text" class="form-control" name="company" required>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="input-group input-group-outline my-3">
+                  {% comment %} <label class="form-label">Type</label> {% endcomment %}
+                  <select class="form-control" name="type" required>
+                    <label class="form-label">
+                    <option value="" disabled selected>You are</option></label>
+                    <option value="Architect">Architect</option>
+                    <option value="Carpenter">Carpenter</option>
+                    <option value="Dealer">Dealer</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="input-group input-group-outline my-3">
+                  {% comment %} <label class="form-label">State</label> {% endcomment %}
+                  <select class="form-control" name="state" id="state" required>
+                    <option value="" disabled selected>Select State</option>
+                    {% for state in states %}
+                      <option value="{{ state }}">{{ state }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="input-group input-group-outline my-3">
+                  {% comment %} <label class="form-label">District</label> {% endcomment %}
+                  <select class="form-control" name="district" id="district" required>
+                    <option value="" disabled selected>Select District</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="input-group input-group-outline my-3">
+                  {% comment %} <label class="form-label"></label> {% endcomment %}
+                  <select class="form-control" name="medium" id="medium" required>
+                    <option value="" selected>Select Medium</option>
+                    <option value="English" >English</option>
+                    <option value="Hindi" >हिंदी</option>
+                  </select>
+                </div>
+              </div>
+              <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+                $(document).ready(function() {
+                  // Function to update districts based on selected state
+                  $('#state').change(function() {
+                    var state = $(this).val();
+                    var districts = {{ districts|safe }};
+                    
+                    // Clear previous options
+                    $('#district').empty().append('<option value="" disabled selected>Select District</option>');
+                    
+                    // Add options for selected state
+                    if (state && districts[state]) {
+                      districts[state].forEach(function(district) {
+                        $('#district').append('<option value="' + district + '">' + district + '</option>');
+                      });
+                    }
+                  });
+                });
+                document.getElementById('phone').addEventListener('input', function (e) {
+                    const input = e.target;
+                    const value = input.value;
+                    const feedback = input.nextElementSibling;
+                    
+                    if (value.length === 10) {
+                        input.setCustomValidity('');
+                        feedback.style.display = 'none';
+                    } else {
+                        input.setCustomValidity('Phone number must be exactly 10 digits.');
+                        feedback.style.display = 'block';
+                    }
+                });
+            
+                document.getElementById('phone').addEventListener('invalid', function (e) {
+                    e.target.setCustomValidity('Phone number must be exactly 10 digits.');
+                });
+            </script>
+              {% if msg_alert%}
+              <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+              </div>
+              {% endif %}
+              <div class="text-center">
+                <button type="submit" class="btn bg-gradient-warning w-100 my-4 mb-2" style="background-color: #8ED3F4 !important; /* Light blue color */">Join the Quiz</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal HTML -->
+<div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center" id="instructionsModalLabel">
+          Welcome to Trojen's Independence Day Quiz program!
+        </h5>
+        {% comment %} <p id="instructionsModalLabel">Before You Begin:</p> {% endcomment %}
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6 class="modal-title w-100" id="instructionsModalSubTitle">
+          Before You Begin:
+        </h6>
+        <br>
+        <p>
+          1. Read Each Question Carefully:
+          <ul>
+            <li>Take your time to read each question thoroughly.</li>
+            <li>Ensure you understand the question before choosing an answer.</li>
+          </ul>
+        </p>
+        <p>
+          2. Choose the Best Answer:
+          <ul>
+            <li>Each question has multiple options. Select the option you believe is the best answer.</li>
+            <li>You may only select one answer per question.</li>
+            <li>You can skip a question without selecting an answer if you prefer.</li>
+          </ul>
+        </p>
+        <p>
+          3. Do Not Refresh or Navigate Away:
+          <ul>
+            <li>Refreshing the page or navigating away from the quiz may cause you to lose your progress.</li>
+            <li>Complete the quiz in one sitting to ensure your answers are submitted correctly.</li>
+          </ul>
+        </p>
+        <p>
+          4. Technical Issues:
+          <ul>
+            <li>If you encounter any technical issues, report them immediately to the quiz administrator.</li>
+            <li>Ensure you have a stable internet connection to avoid interruptions.</li>
+          </ul>
+        </p>
+        <br>
+        <h6 class="modal-title text-center" id="instructionsModalLabel">
+          Have fun and take the opportunity to test your knowledge.
+        </h6>
+        <h6 class="modal-title text-center" id="instructionsModalLabel">
+          Good luck!
+        </h6>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="confirmInstructions">Join</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Show the modal when the form is submitted
+    $('form').on('submit', function(e) {
+      e.preventDefault(); // Prevent form submission
+      $('#instructionsModal').modal('show'); // Show the modal
+    });
+
+    // Handle the OK button click
+    $('#confirmInstructions').on('click', function() {
+      $('#instructionsModal').modal('hide'); // Hide the modal
+      $('form').off('submit').submit(); // Allow form submission
+    });
+
+    // Function to update districts based on selected state
+    $('#state').change(function() {
+      var state = $(this).val();
+      var districts = {{ districts|safe }};
+      
+      // Clear previous options
+      $('#district').empty().append('<option value="" disabled selected>Select District</option>');
+      
+      // Add options for selected state
+      if (state && districts[state]) {
+        districts[state].forEach(function(district) {
+          $('#district').append('<option value="' + district + '">' + district + '</option>');
+        });
+      }
+    });
+
+    document.getElementById('phone').addEventListener('input', function (e) {
+        const input = e.target;
+        const value = input.value;
+        const feedback = input.nextElementSibling;
+        
+        if (value.length === 10) {
+            input.setCustomValidity('');
+            feedback.style.display = 'none';
+        } else {
+            input.setCustomValidity('Phone number must be exactly 10 digits.');
+            feedback.style.display = 'block';
+        }
+    });
+
+    document.getElementById('phone').addEventListener('invalid', function (e) {
+        e.target.setCustomValidity('Phone number must be exactly 10 digits.');
+    });
+  });
+</script>
+{% endblock content %}

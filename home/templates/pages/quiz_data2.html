@@ -1,0 +1,53 @@
+{% extends 'layouts/base_background.html' %}
+
+{% block title %} Trojan Quiz {% endblock title %}
+
+{% block content %}
+
+<div class="page-header align-items-start min-vh-100" style="background-image: url('https://th.bing.com/th/id/R.fa856ad9600b4444dd7a9bacc86d5e31?rik=uR%2ff5K2pVRDwfA&riu=http%3a%2f%2fwww.9to5carwallpapers.com%2fwp-content%2fuploads%2f2017%2f07%2fIndian-Independence-Day-Images-hd-Wallpapers.jpg&ehk=RmOEfe2keFYe8%2fnQ5OY10Eoa2g10u%2fUmShWvVym4OTo%3d&risl=&pid=ImgRaw&r=0');" loading="lazy">
+  <span class="mask bg-gradient-dark opacity-6"></span>
+  <div class="container my-auto">
+    <div class="row">
+      <div class="col-lg-10 col-md-8 col-12 mx-auto">
+        <div class="card z-index-0 fadeIn3 fadeInBottom" style="background-color: rgba(255, 255, 255, 0.9); /* Light overlay */">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2" style="background-color: #8ED3F4 !important; /* Light blue color */">
+            <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
+              <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Question {{ sequence_number }}</h4>
+            </div>
+          </div>
+          <div class="card-body">
+            <form role="form" method="post" action="{% url 'quiz_page' %}" class="text-start">
+              {% csrf_token %}
+              <div class="col-md-12 mb-4">
+                <div class="input-group input-group-outline">
+                  <label class="form-label question-label">{{ question.question }}</label>
+                </div>
+              </div>
+              <!-- Add space between question and choices -->
+              <div class="col-md-12 mb-4">
+                <div class="input-group input-group-outline">
+                  <label class="form-label choices-label">Choices</label>
+                </div>
+              </div>
+              <div class="row mb-4">
+                {% for choice in choices %}
+                <div class="col-md-6 my-2">
+                  <input class="form-check-input" type="radio" name="choice" value="{{ choice.id }}" id="choice{{ choice.id }}">
+                  <label class="form-check-label" for="choice{{ choice.id }}">
+                    {{ choice.choice }}
+                  </label>
+                </div>
+                {% endfor %}
+              </div>
+              <div class="text-center mt-4">
+                <button type="submit" class="btn bg-gradient-primary w-100" style="background-color: #8ED3F4 !important;">Next Question</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

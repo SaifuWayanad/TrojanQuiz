@@ -1,0 +1,27 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Ensure body covers entire viewport */
+body {
+    height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Class to apply to the background image */
+.bg-image {
+    position: relative;
+    background-size: cover;
+    background-position: center center;
+    height: 100vh; /* Adjust as needed */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .bg-image {
+        background-size: contain; /* Adjust for smaller screens */
+    }
+}
