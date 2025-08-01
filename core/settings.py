@@ -41,7 +41,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 # Add here your deployment HOSTS
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://localhost:5085', 'http://127.0.0.1:8000', 'http://127.0.0.1:5085']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://localhost:5085', 'http://127.0.0.1:8000', 'http://127.0.0.1:5085',"https://157.173.218.29"]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -120,10 +120,10 @@ else:
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'quizAppdb', #'root$quizAppdb',
-        'USER': 'root',
-        'PASSWORD': 'ic4*inthesky',
-        'HOST': '127.0.0.1',
+        'NAME': 'admin_quiz$admin_trojanQuiz', #'root$quizAppdb',
+        'USER': 'admin_trojanQuiz',
+        'PASSWORD': 'trojan@9539',
+        'HOST': '157.173.218.29',
         'PORT': '3306',  # Add this line if needed
     }
 }
