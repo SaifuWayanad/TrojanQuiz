@@ -41,7 +41,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 # Add here your deployment HOSTS
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://localhost:5085', 'http://127.0.0.1:8000', 'http://127.0.0.1:5085',"https://157.173.218.29"]
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://localhost:5085', 'http://127.0.0.1:8000', 'http://127.0.0.1:5085',"http://157.173.218.29","https://157.173.218.29","http://TrojanQuiz.trojanconnect.com"]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -95,44 +95,66 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.wsgi.application"
 
 
+DB_ENGINE = os.getenv("DB_ENGINE", "django.db.backends.mysql")  # or 'django.db.backends.mysql'
+DB_NAME   = os.getenv("DB_NAME", "admin_trojanQuiz")
+DB_USER   = os.getenv("DB_USER", "admin_quiz")
+DB_PASS   = os.getenv("DB_PASSWORD", "")
+DB_HOST   = os.getenv("DB_HOST", "157.173.218.29")  # or '172.17.0.1' / server IP
+DB_PORT   = os.getenv("DB_PORT", "3306")
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DB_ENGINE   = os.getenv('DB_ENGINE'   , None)
-DB_USERNAME = os.getenv('DB_USERNAME' , None)
-DB_PASS     = os.getenv('DB_PASS'     , None)
-DB_HOST     = os.getenv('DB_HOST'     , None)
-DB_PORT     = os.getenv('DB_PORT'     , None)
-DB_NAME     = os.getenv('DB_NAME'     , None)
 
-if DB_ENGINE and DB_NAME and DB_USERNAME:
-    DATABASES = {
-      'default': {
-        'ENGINE'  : 'django.db.backends.' + DB_ENGINE,
-        'NAME'    : DB_NAME,
-        'USER'    : DB_USERNAME,
-        'PASSWORD': DB_PASS,
-        'HOST'    : DB_HOST,
-        'PORT'    : DB_PORT,
-        },
-    }
-else:
-    DATABASES = {
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': '`admin_trojanQuiz`',
+#         'USER': 'admin_quiz',
+#         'PASSWORD': 'your_password',
+#         'HOST': 'host.docker.internal',  # Adjust as per your Docker network setup
+#         'PORT': '3306',
+#     }
+# }
+DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'admin_quiz$admin_trojanQuiz', #'root$quizAppdb',
-        'USER': 'admin_trojanQuiz',
-        'PASSWORD': 'trojan@9539',
-        'HOST': '157.173.218.29',
-        'PORT': '3306',  # Add this line if needed
-    }
+    'ENGINE'  : 'django.db.backends.' + DB_ENGINE,
+    'NAME'    : DB_NAME,
+    'USER'    : DB_USER,
+    'PASSWORD': DB_PASS,
+    'HOST'    : DB_HOST,
+    'PORT'    : DB_PORT,
+    },
 }
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.sqlite3',
-    #         'NAME': 'db.sqlite3',
-    #     }
-    # }
+# if DB_ENGINE and DB_NAME and DB_USERNAME:
+#     DATABASES = {
+#       'default': {
+#         'ENGINE'  : 'django.db.backends.' + DB_ENGINE,
+#         'NAME'    : DB_NAME,
+#         'USER'    : DB_USERNAME,
+#         'PASSWORD': DB_PASS,
+#         'HOST'    : DB_HOST,
+#         'PORT'    : DB_PORT,
+#         },
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'NAME': 'admin_quiz$admin_trojanQuiz',
+#             'USER': 'admin_quiz',
+#             'PASSWORD': 'trojanplywood@9539',
+#             'HOST': '157.173.218.29',
+#             'PORT': '3306',
+#         }
+#     }
+#     # DATABASES = {
+#     #     'default': {
+#     #         'ENGINE': 'django.db.backends.sqlite3',
+#     #         'NAME': 'db.sqlite3',
+#     #     }
+#     # }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

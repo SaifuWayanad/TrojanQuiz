@@ -1,14 +1,11 @@
-# Core
-django==4.2.9
-python-dotenv==1.0.1
-str2bool==1.1
-
-# UI
+asgiref==3.9.1
+Django==4.2.9
 django-theme-material-kit==1.0.19
-
-# Deployment
-whitenoise==6.6.0
 gunicorn==21.2.0
-
-# psycopg2-binary
-# mysqlclient
+mysqlclient==2.2.7
+packaging==25.0
+pillow==11.3.0
+python-dotenv==1.0.1
+sqlparse==0.5.3
+str2bool==1.1
+whitenoise==6.6.0

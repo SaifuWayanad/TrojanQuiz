@@ -1,18 +1,32 @@
-FROM python:3.9
+FROM almalinux:9
 
-# set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# System deps for Python + mysqlclient
+RUN dnf -y update && \
+    dnf -y install \
+      python3 python3-pip python3-devel \
+      gcc make \
+      mariadb-connector-c mariadb-connector-c-devel \
+      pkgconf-pkg-config \
+      git && \
+    dnf clean all
+
+WORKDIR /app
+
+# (Optional) prevent .pyc and ensure unbuffered logs
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 COPY requirements.txt .
-# install python dependencies
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
 
+# Upgrade pip then install deps
+RUN python3 -m pip install --upgrade pip && \
+    pip3 install --no-cache-dir -r requirements.txt
+
+# Copy the rest
 COPY . .
 
-# running migrations
-RUN python manage.py migrate
+# Expose if you run gunicorn inside
+EXPOSE 5005
 
-# gunicorn
-CMD ["gunicorn", "--config", "gunicorn-cfg.py", "core.wsgi"]
+# Example CMD (adjust for your project)
+CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]
